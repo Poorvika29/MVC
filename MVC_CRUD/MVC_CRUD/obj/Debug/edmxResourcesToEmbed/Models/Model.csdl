@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DbOneModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Dept">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="EmpDetails" Relationship="Self.FK__TblEmpDet__Depar__6FE99F9F" FromRole="TblDept" ToRole="TblEmpDetails" />
+  </EntityType>
+  <EntityType Name="EmpDetail">
+    <Key>
+      <PropertyRef Name="EmpID" />
+    </Key>
+    <Property Name="EmpID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmpName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="Gender" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+    <Property Name="DepartmentId" Type="Int32" />
+    <NavigationProperty Name="Dept" Relationship="Self.FK__TblEmpDet__Depar__6FE99F9F" FromRole="TblEmpDetails" ToRole="TblDept" />
+  </EntityType>
+  <Association Name="FK__TblEmpDet__Depar__6FE99F9F">
+    <End Role="TblDept" Type="DbOneModel.Dept" Multiplicity="0..1" />
+    <End Role="TblEmpDetails" Type="DbOneModel.EmpDetail" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TblDept">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TblEmpDetails">
+        <PropertyRef Name="DepartmentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="EmpEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Depts" EntityType="DbOneModel.Dept" />
+    <EntitySet Name="EmpDetails" EntityType="DbOneModel.EmpDetail" />
+    <AssociationSet Name="FK__TblEmpDet__Depar__6FE99F9F" Association="Self.FK__TblEmpDet__Depar__6FE99F9F">
+      <End Role="TblDept" EntitySet="Depts" />
+      <End Role="TblEmpDetails" EntitySet="EmpDetails" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

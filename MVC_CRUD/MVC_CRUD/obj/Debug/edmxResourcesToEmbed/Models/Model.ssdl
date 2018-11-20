@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DbOneModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="TblDept">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="20" />
+  </EntityType>
+  <EntityType Name="TblEmpDetails">
+    <Key>
+      <PropertyRef Name="EmpID" />
+    </Key>
+    <Property Name="EmpID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EmpName" Type="varchar" MaxLength="20" />
+    <Property Name="Gender" Type="varchar" MaxLength="6" />
+    <Property Name="DepartmentId" Type="int" />
+  </EntityType>
+  <Association Name="FK__TblEmpDet__Depar__6FE99F9F">
+    <End Role="TblDept" Type="Self.TblDept" Multiplicity="0..1" />
+    <End Role="TblEmpDetails" Type="Self.TblEmpDetails" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TblDept">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TblEmpDetails">
+        <PropertyRef Name="DepartmentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DbOneModelStoreContainer">
+    <EntitySet Name="TblDept" EntityType="Self.TblDept" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TblEmpDetails" EntityType="Self.TblEmpDetails" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__TblEmpDet__Depar__6FE99F9F" Association="Self.FK__TblEmpDet__Depar__6FE99F9F">
+      <End Role="TblDept" EntitySet="TblDept" />
+      <End Role="TblEmpDetails" EntitySet="TblEmpDetails" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

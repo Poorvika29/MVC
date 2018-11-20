@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DbOneModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TblDept">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="20" />
+        </EntityType>
+        <EntityType Name="TblEmpDetails">
+          <Key>
+            <PropertyRef Name="EmpID" />
+          </Key>
+          <Property Name="EmpID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmpName" Type="varchar" MaxLength="20" />
+          <Property Name="Gender" Type="varchar" MaxLength="6" />
+          <Property Name="DepartmentId" Type="int" />
+        </EntityType>
+        <Association Name="FK__TblEmpDet__Depar__6FE99F9F">
+          <End Role="TblDept" Type="Self.TblDept" Multiplicity="0..1" />
+          <End Role="TblEmpDetails" Type="Self.TblEmpDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TblDept">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TblEmpDetails">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DbOneModelStoreContainer">
+          <EntitySet Name="TblDept" EntityType="Self.TblDept" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TblEmpDetails" EntityType="Self.TblEmpDetails" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__TblEmpDet__Depar__6FE99F9F" Association="Self.FK__TblEmpDet__Depar__6FE99F9F">
+            <End Role="TblDept" EntitySet="TblDept" />
+            <End Role="TblEmpDetails" EntitySet="TblEmpDetails" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DbOneModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Dept">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EmpDetails" Relationship="Self.FK__TblEmpDet__Depar__6FE99F9F" FromRole="TblDept" ToRole="TblEmpDetails" />
+        </EntityType>
+        <EntityType Name="EmpDetail">
+          <Key>
+            <PropertyRef Name="EmpID" />
+          </Key>
+          <Property Name="EmpID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmpName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Gender" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="DepartmentId" Type="Int32" />
+          <NavigationProperty Name="Dept" Relationship="Self.FK__TblEmpDet__Depar__6FE99F9F" FromRole="TblEmpDetails" ToRole="TblDept" />
+        </EntityType>
+        <Association Name="FK__TblEmpDet__Depar__6FE99F9F">
+          <End Role="TblDept" Type="DbOneModel.Dept" Multiplicity="0..1" />
+          <End Role="TblEmpDetails" Type="DbOneModel.EmpDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TblDept">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TblEmpDetails">
+              <PropertyRef Name="DepartmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EmpEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Depts" EntityType="DbOneModel.Dept" />
+          <EntitySet Name="EmpDetails" EntityType="DbOneModel.EmpDetail" />
+          <AssociationSet Name="FK__TblEmpDet__Depar__6FE99F9F" Association="Self.FK__TblEmpDet__Depar__6FE99F9F">
+            <End Role="TblDept" EntitySet="Depts" />
+            <End Role="TblEmpDetails" EntitySet="EmpDetails" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DbOneModelStoreContainer" CdmEntityContainer="EmpEntities">
+          <EntitySetMapping Name="Depts">
+            <EntityTypeMapping TypeName="DbOneModel.Dept">
+              <MappingFragment StoreEntitySet="TblDept">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmpDetails">
+            <EntityTypeMapping TypeName="DbOneModel.EmpDetail">
+              <MappingFragment StoreEntitySet="TblEmpDetails">
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+                <ScalarProperty Name="EmpName" ColumnName="EmpName" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
