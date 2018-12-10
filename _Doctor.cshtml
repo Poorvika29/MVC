@@ -1,0 +1,90 @@
+﻿@model IEnumerable<mvc.Models.Doctor>
+
+<script>
+
+    $('#loadPartialActionLink').on('click', function () {
+
+        $.ajax({
+            type: "GET",
+            url: '/Doctor/Contact',
+            success: function (data, textStatus, jqXHR) {
+                $('#AJAXContainer').html(data);
+            }
+        });
+    });
+
+</script>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+@foreach (var item in Model)
+{
+    <table style="font-family:Arial; border:1px solid black; width: 300px">
+        <tr>
+            <td>
+
+                <img src="~/Image/download.jpg" height="80" width="100" />
+            </td>
+            <td> &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+            <td>
+                <table width="500">
+
+                    <tr>
+                        <td><b>Doctor Name :</b></td>
+                        <td>@item.name</td>
+
+                    </tr>
+
+                    <tr>
+                        <td><b>Gender:</b></td>
+                        <td>@item.Gender</td>
+                    </tr>
+                    <tr>
+                        <td><b>Address:</b></td>
+                        <td>@item.Address</td>
+                    </tr>
+                    <tr>
+                        <td><b>Contact:</b></td>
+                        <td>@item.contact</td>
+                    </tr>
+                    <tr>
+                        <td><b>Speciality:</b></td>
+                        <td>@item.Speciality</td>
+                    </tr>
+                    <tr>
+                        <td><b>Degree :</b></td>
+                        <td>@item.Degree</td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                @Html.ActionLink("Book Appointment", "Edit", new { id = item.id })&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+            </td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+            <td>&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;</td>
+            
+            <td>
+                @Ajax.ActionLink("Contact Clinic", "Contact","Doctor", new { id = item },new AjaxOptions
+           {
+               HttpMethod = "GET",
+               UpdateTargetId = "AJAXContainer",
+               InsertionMode =InsertionMode.Replace
+           })
+
+
+                @Html.ActionLink("Contact Clinic", "Contact", "Doctor", new { id = item })&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                @*<span> <a href="/Doctor/Contact" id = "loadPartialActionLink"> Contact Clinic </a></span>*@
+            </td>
+            @*@Html.ActionLink("Edit", "Edit", new { id = item.id })
+            <br />
+
+            @Html.ActionLink("Delete", "Delete", new { id = item.id })
+        </td>*@
+        </tr>
+        <tr></tr>
+    </table>
+}
+<div id="AJAXContainer"></div>
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
